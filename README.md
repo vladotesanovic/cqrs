@@ -1,6 +1,9 @@
 ## Description
 
--
+Demonstration of CQRS pattern and Event Driven Programming using Nest.js
+
+Article describing this repository: 
+Diagram of this software is:
 
 ## Installation
 

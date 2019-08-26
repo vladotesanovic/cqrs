@@ -1,11 +1,28 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { MailService } from './mail/mail.service';
+import { MailHandler } from './mail/mail.handler';
+import { BidHandler } from './bid/bid.handler';
+import { BidSaga } from './bid/bid.saga';
+import { AuctionHandler } from './auction/auction.handler';
+import { AuctionRepository } from './auction/auction.repository';
+import { AuctionSaga } from './auction/auction.saga';
+import { GetAuctionHandler } from './auction/auction.query';
 
 @Module({
-  imports: [],
+  imports: [
+    CqrsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, MailService],
+  providers: [
+    MailHandler,
+    AuctionSaga,
+    BidHandler,
+    BidSaga,
+    AuctionHandler,
+    GetAuctionHandler,
+    AuctionRepository,
+  ],
 })
 export class AppModule {}

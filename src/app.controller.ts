@@ -1,12 +1,31 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { EventBus, QueryBus } from '@nestjs/cqrs';
+
+import { BidEvent } from './bid/bid.events';
+import { GetAuctionQuery } from './auction/auction.query';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly eventBus: EventBus, private queryBus: QueryBus) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  async bid(): Promise<object> {
+
+    // We are hard-coding values here
+    // instead of collecting them from a request
+    this.eventBus.publish(
+      new BidEvent('4ccd1088-b5da-44e2-baa0-ee4e0a58659d', '0ac04f2a-4866-42de-9387-cf392f64cd52', 233),
+    );
+
+    return {
+      status: 'PENDING',
+    };
+  }
+
+  @Get('/audiences')
+  async getAudiences() {
+    const allAudiences = await this.queryBus.execute(new GetAuctionQuery());
+
+    return allAudiences;
   }
 }
