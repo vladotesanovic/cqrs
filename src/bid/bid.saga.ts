@@ -16,7 +16,7 @@ export class BidSaga {
     return events$.pipe(
       ofType(BidEvent),
       map((event: BidEvent) => {
-        return new BidCommand(event.bidUser, event.auctionID, event.bidAmount);
+        return new BidCommand(event.bidTransactionGUID, event.bidUser, event.auctionID, event.bidAmount);
       }),
     );
   }
@@ -26,6 +26,9 @@ export class BidSaga {
     return events$.pipe(
       ofType(BidEventSuccess),
       flatMap((event: BidEventSuccess) => {
+
+        // We are always passing transaction GUID
+        // event.bidTransactionGUID
 
         return [
           new MailCommand(event.user.email, {

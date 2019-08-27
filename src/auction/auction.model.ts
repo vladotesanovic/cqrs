@@ -17,18 +17,18 @@ export class AuctionModel extends AggregateRoot {
     this.apply(new AuctionEventsPostponed(auction));
   }
 
-  bidOnAuction(userID: string, amount: number) {
+  bidOnAuction(bidTransactionGUID: string, userID: string, amount: number) {
     // validation and etc.
     try {
 
       // business logic
       // upon successful bidding, dispatch new event
-      this.apply(new BidEventSuccess(this.auction.id, amount, { email: 'fake@email.com', id: userID }));
+      this.apply(new BidEventSuccess(bidTransactionGUID, this.auction.id, amount, { email: 'fake@email.com', id: userID }));
 
     } catch (e) {
 
       // dispatch bid event fail action
-      this.apply(new BidEventFail(e));
+      this.apply(new BidEventFail(bidTransactionGUID, e));
     }
   }
 }

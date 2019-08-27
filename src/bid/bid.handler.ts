@@ -11,7 +11,7 @@ export class BidHandler implements ICommandHandler<BidCommand> {
 
   async execute(command: BidCommand) {
 
-    const { bidAmount, auctionID, bidUserGUID } = command;
+    const { bidTransactionGUID , bidAmount, auctionID, bidUserGUID } = command;
 
     // tslint:disable-next-line:no-console
     console.log(`Make a bid on ${auctionID}, with userID: ${bidUserGUID} amount: ${bidAmount}`);
@@ -21,7 +21,7 @@ export class BidHandler implements ICommandHandler<BidCommand> {
       await this.auctionRepository.getActionById(auctionID),
     );
 
-    auction.bidOnAuction(bidUserGUID, bidAmount);
+    auction.bidOnAuction(bidTransactionGUID, bidUserGUID, bidAmount);
     auction.commit();
   }
 
